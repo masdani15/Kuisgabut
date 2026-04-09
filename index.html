@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Gabut - Dani</title>
+    <title>Kuis Gabut</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -159,7 +159,8 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "URL_WEB_APP_KAMU_DI_SINI";
+        // Masukkan URL Web App kamu di sini
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykpo50zNGjA0aB23yerMwtEHklLe8U-VGItKLUXMqd1zNo31JSaQGQq5Vv2_NYx1pCYA/exec";
 
         const questions = [
             { q: "Apa nama galaksi tempat Bumi berada?", a: ["Andromeda", "Bimasakti", "Sombrero"], c: 1 },
@@ -223,18 +224,23 @@
 
         function processFinal() {
             closeConfirm();
-            let score = 0;
-            userAnswers.forEach((ans, i) => { if(ans === questions[i].c) score++; });
+            let correctCount = 0;
+            userAnswers.forEach((ans, i) => { if(ans === questions[i].c) correctCount++; });
 
-            // Kirim data diam-diam
-            if(SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbykpo50zNGjA0aB23yerMwtEHklLe8U-VGItKLUXMqd1zNo31JSaQGQq5Vv2_NYx1pCYA/exec") {
-                fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({nama: pName, skor: score}) });
-            }
+            // Skor 0-100
+            let finalScore = correctCount * 10;
 
-            // Tampilkan Skor
+            // Kirim data langsung tanpa filter IF yang salah
+            fetch(SCRIPT_URL, { 
+                method: "POST", 
+                mode: "no-cors", 
+                body: JSON.stringify({nama: pName, skor: finalScore}) 
+            });
+
+            // Tampilkan Skor di Layar
             document.getElementById('res-name').innerText = "Halo, " + pName + "!";
-            document.getElementById('res-score').innerText = score + "/10";
-            let desc = score >= 7 ? "Wawasanmu keren! 🔥" : score >= 4 ? "Lumayan kok! 😊" : "Coba lagi yuk! 📖";
+            document.getElementById('res-score').innerText = finalScore;
+            let desc = finalScore >= 70 ? "Wawasanmu keren! 🔥" : finalScore >= 40 ? "Lumayan kok! 😊" : "Coba lagi yuk! 📖";
             document.getElementById('res-desc').innerText = desc;
             document.getElementById('modal-res').style.display = 'flex';
         }
