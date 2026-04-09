@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Gabut - Dani</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text: #ffffff;
+        }
+
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #312e81, #1e1b4b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; color: var(--text); overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container { width: 95%; max-width: 450px; }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            padding: 30px; border-radius: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            text-align: center; display: none; animation: fadeIn 0.5s ease;
+        }
+
+        .card.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        h1 { font-weight: 800; font-size: 30px; margin: 0; background: linear-gradient(to right, #00d2ff, #92fe9d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .created-by { font-size: 11px; opacity: 0.6; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; }
+
+        input[type="text"] {
+            width: 100%; padding: 15px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border); border-radius: 15px;
+            color: white; font-size: 16px; margin-bottom: 20px; outline: none; text-align: center;
+        }
+
+        .option-item {
+            padding: 15px; margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px; cursor: pointer; transition: 0.2s;
+            border: 1px solid var(--glass-border); text-align: left;
+        }
+        .option-item:hover { background: rgba(255, 255, 255, 0.1); }
+        .option-item.selected {
+            background: var(--primary);
+            color: #0f172a; border-color: var(--primary); font-weight: 700;
+        }
+
+        .nav-btns { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-nav {
+            flex: 1; padding: 12px; border-radius: 12px; border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: 600;
+        }
+        .btn-nav:disabled { opacity: 0.2; }
+
+        .btn-finish {
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            border: none; padding: 15px; width: 100%; border-radius: 15px;
+            color: white; font-weight: 800; cursor: pointer; margin-top: 15px;
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none; padding: 15px; width: 100%; border-radius: 15px;
+            color: white; font-weight: 800; cursor: pointer;
+        }
+
+        .progress-container { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 20px; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; border-radius: 10px; transition: 0.4s; }
+
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; justify-content: center;
+            align-items: center; z-index: 100; backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            background: rgba(30, 41, 59, 0.95); padding: 30px; border-radius: 25px;
+            border: 1px solid var(--glass-border); text-align: center; width: 85%; max-width: 380px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="scr-start" class="card active">
+            <h1>Kuis Gabut</h1>
+            <div class="created-by">Created by Dani</div>
+            <p>Uji wawasan kamu lewat 10 soal santai ini. Siap?</p>
+            <input type="text" id="username" placeholder="Siapa namamu?">
+            <button class="btn-glow" onclick="startQuiz()">Mulai Kuis</button>
+        </div>
+
+        <div id="scr-quiz" class="card">
+            <div class="progress-container"><div id="prog" class="progress-fill"></div></div>
+            <p id="q-info" style="font-size: 11px; color: var(--primary); font-weight: 800;"></p>
+            <h2 id="q-text" style="font-size: 19px; margin: 10px 0 20px; line-height: 1.4; min-height: 60px;"></h2>
+            
+            <div id="options-container"></div>
+
+            <div class="nav-btns">
+                <button class="btn-nav" id="btn-prev" onclick="prevQ()">← Kembali</button>
+                <button class="btn-nav" id="btn-next" onclick="nextQ()">Lanjut →</button>
+            </div>
+            
+            <button id="btn-finish" class="btn-finish" style="display:none;" onclick="showConfirm()">Selesai 🏁</button>
+            <div style="margin-top:20px; font-size:10px; opacity:0.4;">Kuis Gabut • Created by Dani</div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="modal">
+        <div class="modal-content">
+            <div style="font-size: 40px; margin-bottom: 10px;">🤔</div>
+            <h2>Sudah Yakin?</h2>
+            <p>Pastikan semua jawaban sudah benar sebelum melihat hasil akhir.</p>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="btn-nav" style="flex:1;" onclick="closeConfirm()">Cek Lagi</button>
+                <button class="btn-glow" style="flex:1;" onclick="processFinal()">Yakin!</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-alert" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--primary);">Oops!</h2>
+            <p id="alert-msg">Isi nama dulu ya!</p>
+            <button class="btn-glow" onclick="closeAlert()">Oke!</button>
+        </div>
+    </div>
+
+    <div id="modal-res" class="modal">
+        <div class="modal-content">
+            <h2>Skor Kamu</h2>
+            <div class="created-by">Kuis Gabut by Dani</div>
+            <p id="res-name" style="font-weight:600;"></p>
+            <div style="font-size: 55px; font-weight: 800; margin: 15px 0; color: var(--primary);" id="res-score"></div>
+            <p id="res-desc" style="margin-bottom: 25px;"></p>
+            <button class="btn-glow" onclick="location.reload()">Main Lagi</button>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "URL_WEB_APP_KAMU_DI_SINI";
+
+        const questions = [
+            { q: "Apa nama galaksi tempat Bumi berada?", a: ["Andromeda", "Bimasakti", "Sombrero"], c: 1 },
+            { q: "Siapa penulis novel 'Laskar Pelangi'?", a: ["Andrea Hirata", "Tere Liye", "Dee Lestari"], c: 0 },
+            { q: "Mata uang resmi negara Thailand adalah...", a: ["Ringgit", "Baht", "Peso"], c: 1 },
+            { q: "Benua terkecil di dunia adalah...", a: ["Australia", "Eropa", "Antartika"], c: 0 },
+            { q: "Benua terluas di permukaan Bumi adalah...", a: ["Amerika Utara", "Afrika", "Asia"], c: 2 },
+            { q: "Siapa Presiden ke-3 Republik Indonesia?", a: ["Abdurrahman Wahid", "Megawati", "B.J. Habibie"], c: 2 },
+            { q: "Ibu kota negara Italia adalah...", a: ["Milan", "Roma", "Venesia"], c: 1 },
+            { q: "Hewan mamalia apa yang dikenal bisa terbang?", a: ["Kelelawar", "Tupai", "Cendrawasih"], c: 0 },
+            { q: "Samudera terluas di dunia adalah...", a: ["Atlantik", "Hindia", "Pasifik"], c: 2 },
+            { q: "Negara yang dijuluki Negeri Tirai Bambu adalah...", a: ["Jepang", "China", "Korea Utara"], c: 1 }
+        ];
+
+        let currentIdx = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let pName = "";
+
+        function closeAlert() { document.getElementById('modal-alert').style.display = 'none'; }
+        function showConfirm() {
+            if(userAnswers.includes(null)) {
+                document.getElementById('alert-msg').innerText = "Ada soal yang belum dijawab!";
+                document.getElementById('modal-alert').style.display = 'flex';
+                return;
+            }
+            document.getElementById('modal-confirm').style.display = 'flex';
+        }
+        function closeConfirm() { document.getElementById('modal-confirm').style.display = 'none'; }
+
+        function startQuiz() {
+            pName = document.getElementById('username').value.trim();
+            if(!pName) { document.getElementById('modal-alert').style.display = 'flex'; return; }
+            document.getElementById('scr-start').classList.remove('active');
+            document.getElementById('scr-quiz').classList.add('active');
+            renderQ();
+        }
+
+        function renderQ() {
+            const data = questions[currentIdx];
+            document.getElementById('q-info').innerText = `PERTANYAAN ${currentIdx + 1} / 10`;
+            document.getElementById('q-text').innerText = data.q;
+            document.getElementById('prog').style.width = ((currentIdx + 1) / 10 * 100) + "%";
+
+            document.getElementById('btn-prev').disabled = (currentIdx === 0);
+            document.getElementById('btn-next').style.display = (currentIdx === 9) ? "none" : "block";
+            document.getElementById('btn-finish').style.display = (currentIdx === 9) ? "block" : "none";
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
+            data.a.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = `option-item ${userAnswers[currentIdx] === i ? 'selected' : ''}`;
+                div.innerText = opt;
+                div.onclick = () => { userAnswers[currentIdx] = i; renderQ(); };
+                container.appendChild(div);
+            });
+        }
+
+        function nextQ() { if(currentIdx < 9) { currentIdx++; renderQ(); } }
+        function prevQ() { if(currentIdx > 0) { currentIdx--; renderQ(); } }
+
+        function processFinal() {
+            closeConfirm();
+            let score = 0;
+            userAnswers.forEach((ans, i) => { if(ans === questions[i].c) score++; });
+
+            // Kirim data diam-diam
+            if(SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbykpo50zNGjA0aB23yerMwtEHklLe8U-VGItKLUXMqd1zNo31JSaQGQq5Vv2_NYx1pCYA/exec") {
+                fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({nama: pName, skor: score}) });
+            }
+
+            // Tampilkan Skor
+            document.getElementById('res-name').innerText = "Halo, " + pName + "!";
+            document.getElementById('res-score').innerText = score + "/10";
+            let desc = score >= 7 ? "Wawasanmu keren! 🔥" : score >= 4 ? "Lumayan kok! 😊" : "Coba lagi yuk! 📖";
+            document.getElementById('res-desc').innerText = desc;
+            document.getElementById('modal-res').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
