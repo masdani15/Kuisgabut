@@ -2,100 +2,215 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Gabut</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kuis Santai Modern</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --text: #ffffff;
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --accent: #10b981;
+            --bg-dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
 
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            background: linear-gradient(-45deg, #0f172a, #1e293b, #312e81, #1e1b4b);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; margin: 0; color: var(--text); overflow: hidden;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            overflow: hidden;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .container { 
+            width: 100%; 
+            max-width: 420px; 
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-
-        .container { width: 95%; max-width: 450px; }
 
         .card {
             background: var(--glass);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            padding: 30px; border-radius: 30px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            text-align: center; display: none; animation: fadeIn 0.5s ease;
+            padding: 25px;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            text-align: center;
+            display: none;
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
         }
 
         .card.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-        h1 { font-weight: 800; font-size: 30px; margin: 0; background: linear-gradient(to right, #00d2ff, #92fe9d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .created-by { font-size: 11px; opacity: 0.6; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; }
+        h1 { 
+            font-size: 26px; 
+            font-weight: 800; 
+            margin: 0 0 5px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle { font-size: 13px; opacity: 0.6; margin-bottom: 25px; letter-spacing: 0.5px; }
 
         input[type="text"] {
-            width: 100%; padding: 15px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border); border-radius: 15px;
-            color: white; font-size: 16px; margin-bottom: 20px; outline: none; text-align: center;
+            width: 100%;
+            padding: 16px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--glass-border);
+            border-radius: 18px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.1);
+            outline: none;
+        }
+
+        .cat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .cat-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            padding: 20px 10px;
+            border-radius: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cat-item:active { transform: scale(0.95); }
+        .cat-item:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); }
+        .cat-item .icon { font-size: 32px; margin-bottom: 8px; display: block; }
+        .cat-item span { font-size: 13px; font-weight: 700; color: #cbd5e1; }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            min-height: 60px;
         }
 
         .option-item {
-            padding: 15px; margin-bottom: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px; cursor: pointer; transition: 0.2s;
-            border: 1px solid var(--glass-border); text-align: left;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            cursor: pointer;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.2s;
         }
-        .option-item:hover { background: rgba(255, 255, 255, 0.1); }
+
         .option-item.selected {
-            background: var(--primary);
-            color: #0f172a; border-color: var(--primary); font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #0f172a;
+            border-color: transparent;
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
         }
 
-        .nav-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-nav {
-            flex: 1; padding: 12px; border-radius: 12px; border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: 600;
-        }
-        .btn-nav:disabled { opacity: 0.2; }
-
-        .btn-finish {
-            background: linear-gradient(45deg, #10b981, #3b82f6);
-            border: none; padding: 15px; width: 100%; border-radius: 15px;
-            color: white; font-weight: 800; cursor: pointer; margin-top: 15px;
-        }
-
-        .btn-glow {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border: none; padding: 15px; width: 100%; border-radius: 15px;
-            color: white; font-weight: 800; cursor: pointer;
+        .btn-action {
+            width: 100%;
+            padding: 16px;
+            border-radius: 18px;
+            border: none;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
         }
 
-        .progress-container { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 20px; }
-        .progress-fill { height: 100%; background: var(--primary); width: 0%; border-radius: 10px; transition: 0.4s; }
+        .btn-main { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+        .btn-finish { background: var(--accent); color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--glass-border); color: white; flex: 1; }
 
+        .nav-group { display: flex; gap: 10px; margin-top: 5px; }
+
+        /* Modal styling */
         .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: none; justify-content: center;
-            align-items: center; z-index: 100; backdrop-filter: blur(10px);
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+            backdrop-filter: blur(8px);
         }
-        .modal-content {
-            background: rgba(30, 41, 59, 0.95); padding: 30px; border-radius: 25px;
-            border: 1px solid var(--glass-border); text-align: center; width: 85%; max-width: 380px;
+
+        .modal-box {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 28px;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        #res-score {
+            font-size: 64px;
+            font-weight: 800;
+            margin: 10px 0;
+            color: var(--secondary);
         }
     </style>
 </head>
@@ -103,146 +218,201 @@
 
     <div class="container">
         <div id="scr-start" class="card active">
-            <h1>Kuis Gabut</h1>
-            <div class="created-by">Created by Dani</div>
-            <p>Uji wawasan kamu lewat 10 soal santai ini. Siap?</p>
-            <input type="text" id="username" placeholder="Siapa namamu?">
-            <button class="btn-glow" onclick="startQuiz()">Mulai Kuis</button>
+            <h1>Kuis Santai</h1>
+            <div class="subtitle">Bersenang-senang dengan pengetahuan</div>
+            <input type="text" id="username" placeholder="Ketik nama kamu..." spellcheck="false">
+            <button class="btn-action btn-main" onclick="goToMenu()">Mulai Game</button>
+            <div style="margin-top: 20px; font-size: 10px; opacity: 0.4;">v2.0 • Created by Dani</div>
+        </div>
+
+        <div id="scr-menu" class="card">
+            <h2 id="welcome-msg" style="margin:0"></h2>
+            <div class="subtitle">Pilih tantanganmu hari ini:</div>
+            <div class="cat-grid">
+                <div class="cat-item" onclick="startQuiz('hitungan')"><span class="icon">🧮</span><span>Hitung-hitungan</span></div>
+                <div class="cat-item" onclick="startQuiz('alam')"><span class="icon">🌿</span><span>Alam Sekitar</span></div>
+                <div class="cat-item" onclick="startQuiz('sosial')"><span class="icon">🤝</span><span>Obrolan Sosial</span></div>
+                <div class="cat-item" onclick="startQuiz('budaya')"><span class="icon">🎭</span><span>Warisan Kita</span></div>
+            </div>
         </div>
 
         <div id="scr-quiz" class="card">
-            <div class="progress-container"><div id="prog" class="progress-fill"></div></div>
-            <p id="q-info" style="font-size: 11px; color: var(--primary); font-weight: 800;"></p>
-            <h2 id="q-text" style="font-size: 19px; margin: 10px 0 20px; line-height: 1.4; min-height: 60px;"></h2>
-            
-            <div id="options-container"></div>
-
-            <div class="nav-btns">
-                <button class="btn-nav" id="btn-prev" onclick="prevQ()">← Kembali</button>
-                <button class="btn-nav" id="btn-next" onclick="nextQ()">Lanjut →</button>
+            <div class="q-header">
+                <span id="cat-label">KATEGORI</span>
+                <span id="q-count">0/0</span>
             </div>
+            <div class="progress-bar"><div id="prog" class="progress-fill"></div></div>
+            <div class="question-text" id="q-text">Sedang memuat soal...</div>
+            <div id="options-container"></div>
             
-            <button id="btn-finish" class="btn-finish" style="display:none;" onclick="showConfirm()">Selesai 🏁</button>
-            <div style="margin-top:20px; font-size:10px; opacity:0.4;">Kuis Gabut • Created by Dani</div>
+            <div class="nav-group">
+                <button class="btn-action btn-outline" id="btn-prev" onclick="prevQ()">Kembali</button>
+                <button class="btn-action btn-outline" id="btn-next" onclick="nextQ()">Lanjut</button>
+            </div>
+            <button id="btn-finish" class="btn-action btn-finish" style="display:none;" onclick="showConfirm()">Selesai & Cek Skor</button>
         </div>
     </div>
 
     <div id="modal-confirm" class="modal">
-        <div class="modal-content">
-            <div style="font-size: 40px; margin-bottom: 10px;">🤔</div>
-            <h2>Sudah Yakin?</h2>
-            <p>Pastikan semua jawaban sudah benar sebelum melihat hasil akhir.</p>
+        <div class="modal-box">
+            <div style="font-size: 40px; margin-bottom: 10px;">🚀</div>
+            <h3>Kirim Jawaban?</h3>
+            <p style="font-size: 14px; opacity: 0.7;">Pastikan semua sudah terisi ya!</p>
             <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="btn-nav" style="flex:1;" onclick="closeConfirm()">Cek Lagi</button>
-                <button class="btn-glow" style="flex:1;" onclick="processFinal()">Yakin!</button>
+                <button class="btn-action btn-outline" onclick="closeConfirm()">Cek Lagi</button>
+                <button class="btn-action btn-main" onclick="processFinal()">Yakin</button>
             </div>
         </div>
     </div>
 
-    <div id="modal-alert" class="modal">
-        <div class="modal-content">
-            <h2 style="color: var(--primary);">Oops!</h2>
-            <p id="alert-msg">Isi nama dulu ya!</p>
-            <button class="btn-glow" onclick="closeAlert()">Oke!</button>
-        </div>
-    </div>
-
     <div id="modal-res" class="modal">
-        <div class="modal-content">
-            <h2>Skor Kamu</h2>
-            <div class="created-by">Kuis Gabut by Dani</div>
-            <p id="res-name" style="font-weight:600;"></p>
-            <div style="font-size: 55px; font-weight: 800; margin: 15px 0; color: var(--primary);" id="res-score"></div>
-            <p id="res-desc" style="margin-bottom: 25px;"></p>
-            <button class="btn-glow" onclick="location.reload()">Main Lagi</button>
+        <div class="modal-box">
+            <h3>Hasil Akhir</h3>
+            <div id="res-score">0</div>
+            <p id="res-desc" style="font-weight: 700;"></p>
+            <button class="btn-action btn-main" onclick="backToMenu()">Main Kategori Lain</button>
         </div>
     </div>
 
     <script>
-        // Masukkan URL Web App kamu di sini
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykpo50zNGjA0aB23yerMwtEHklLe8U-VGItKLUXMqd1zNo31JSaQGQq5Vv2_NYx1pCYA/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMLfsw7l7WJ2TJKuudEHplsMyTQ0JzwhHlsA-rCThh1aXvFdwfEa6vGT5BA_u1wrgvyw/exec";
 
-        const questions = [
-            { q: "Apa nama galaksi tempat Bumi berada?", a: ["Andromeda", "Bimasakti", "Sombrero"], c: 1 },
-            { q: "Siapa penulis novel 'Laskar Pelangi'?", a: ["Andrea Hirata", "Tere Liye", "Dee Lestari"], c: 0 },
-            { q: "Mata uang resmi negara Thailand adalah...", a: ["Ringgit", "Baht", "Peso"], c: 1 },
-            { q: "Benua terkecil di dunia adalah...", a: ["Australia", "Eropa", "Antartika"], c: 0 },
-            { q: "Benua terluas di permukaan Bumi adalah...", a: ["Amerika Utara", "Afrika", "Asia"], c: 2 },
-            { q: "Siapa Presiden ke-3 Republik Indonesia?", a: ["Abdurrahman Wahid", "Megawati", "B.J. Habibie"], c: 2 },
-            { q: "Ibu kota negara Italia adalah...", a: ["Milan", "Roma", "Venesia"], c: 1 },
-            { q: "Hewan mamalia apa yang dikenal bisa terbang?", a: ["Kelelawar", "Tupai", "Cendrawasih"], c: 0 },
-            { q: "Samudera terluas di dunia adalah...", a: ["Atlantik", "Hindia", "Pasifik"], c: 2 },
-            { q: "Negara yang dijuluki Negeri Tirai Bambu adalah...", a: ["Jepang", "China", "Korea Utara"], c: 1 }
-        ];
+        const dbSoal = {
+            hitungan: [
+                { q: "Hasil dari 5 + 5 x 2 adalah...", a: ["20", "15", "25"], c: 1 },
+                { q: "Beli barang 15rb, bayar pakai 50rb. Kembaliannya?", a: ["35.000", "45.000", "25.000"], c: 0 },
+                { q: "Angka genap setelah 12 adalah...", a: ["13", "14", "15"], c: 1 },
+                { q: "Seperempat dari 100 adalah...", a: ["20", "25", "50"], c: 1 },
+                { q: "Berapa banyak sisi pada sebuah dadu standar?", a: ["4", "6", "8"], c: 1 },
+                { q: "Lanjutannya: 2, 4, 6, 8, ...", a: ["9", "10", "11"], c: 1 },
+                { q: "1 jam = 60 menit. Maka 2,5 jam adalah...", a: ["120 menit", "150 menit", "180 menit"], c: 1 },
+                { q: "Bentuk dasar dari ban mobil adalah...", a: ["Kotak", "Segitiga", "Lingkaran"], c: 2 },
+                { q: "100 dikurangi 33 hasilnya adalah...", a: ["66", "67", "77"], c: 1 },
+                { q: "Angka romawi dari sepuluh (10) adalah...", a: ["V", "X", "L"], c: 1 }
+            ],
+            alam: [
+                { q: "Organ tubuh untuk menghirup oksigen adalah...", a: ["Hati", "Paru-paru", "Lambung"], c: 1 },
+                { q: "Hewan yang hidup di darat dan air disebut...", a: ["Reptil", "Amfibi", "Mamalia"], c: 1 },
+                { q: "Planet ketiga dari matahari yang kita huni adalah...", a: ["Mars", "Bumi", "Venus"], c: 1 },
+                { q: "Benda langit yang mengeluarkan cahaya sendiri?", a: ["Bulan", "Planet", "Bintang"], c: 2 },
+                { q: "Warna hijau pada daun disebabkan oleh...", a: ["Klorofil", "Oksigen", "Air"], c: 0 },
+                { q: "Air jika didinginkan sampai 0 derajat akan...", a: ["Menguap", "Membeku", "Mencair"], c: 1 },
+                { q: "Hewan yang dijuluki Raja Hutan adalah...", a: ["Macan", "Singa", "Gajah"], c: 1 },
+                { q: "Berapa kaki yang dimiliki laba-laba?", a: ["6", "8", "10"], c: 1 },
+                { q: "Pusat tata surya kita adalah...", a: ["Bumi", "Bulan", "Matahari"], c: 2 },
+                { q: "Apa yang dikumpulkan lebah dari bunga?", a: ["Madu", "Nektar", "Sari buah"], c: 1 }
+            ],
+            sosial: [
+                { q: "Presiden RI pertama adalah...", a: ["Soeharto", "Soekarno", "Habibie"], c: 1 },
+                { q: "Burung apa yang menjadi lambang negara Indonesia?", a: ["Elang", "Garuda", "Merpati"], c: 1 },
+                { q: "Warna bendera Indonesia adalah...", a: ["Putih Merah", "Merah Putih", "Merah Saja"], c: 1 },
+                { q: "Pecahan uang kertas terbesar di Indonesia saat ini?", a: ["50.000", "75.000", "100.000"], c: 2 },
+                { q: "Ibu kota Indonesia saat ini adalah...", a: ["Jakarta", "Bandung", "IKN"], c: 0 },
+                { q: "Sila pertama Pancasila dilambangkan dengan...", a: ["Padi Kapas", "Rantai", "Bintang"], c: 2 },
+                { q: "Indonesia merdeka setiap tanggal 17 bulan...", a: ["Juli", "Agustus", "September"], c: 1 },
+                { q: "Semboyan Bhinneka Tunggal Ika artinya...", a: ["Satu saja", "Berbeda tapi satu", "Maju terus"], c: 1 },
+                { q: "Benua tempat tinggal kita adalah...", a: ["Eropa", "Asia", "Afrika"], c: 1 },
+                { q: "Nama mata uang negara kita adalah...", a: ["Ringgit", "Rupiah", "Dollar"], c: 1 }
+            ],
+            budaya: [
+                { q: "Rumah adat Sumatera Barat disebut rumah...", a: ["Joglo", "Gadang", "Honai"], c: 1 },
+                { q: "Alat musik bambu yang digoyangkan adalah...", a: ["Suling", "Angklung", "Gamelan"], c: 1 },
+                { q: "Senjata tradisional khas Jawa adalah...", a: ["Keris", "Mandau", "Rencong"], c: 0 },
+                { q: "Tarian Kecak berasal dari daerah...", a: ["Jawa", "Bali", "Papua"], c: 1 },
+                { q: "Batik adalah warisan budaya asli dari...", a: ["Malaysia", "Indonesia", "Singapura"], c: 1 },
+                { q: "Gundul Gundul Pacul adalah lagu daerah...", a: ["Jawa", "Sunda", "Minang"], c: 0 },
+                { q: "Kain tradisional suku Batak disebut...", a: ["Batik", "Ulos", "Tenun"], c: 1 },
+                { q: "Wayang Kulit biasanya dimainkan oleh seorang...", a: ["Sinden", "Dalang", "Pemain"], c: 1 },
+                { q: "Gudeg adalah makanan khas dari...", a: ["Solo", "Jogja", "Semarang"], c: 1 },
+                { q: "Candi Borobudur terletak di provinsi...", a: ["Jawa Barat", "Jawa Tengah", "Jawa Timur"], c: 1 }
+            ]
+        };
 
-        let currentIdx = 0;
-        let userAnswers = new Array(questions.length).fill(null);
-        let pName = "";
+        let currentIdx = 0, userAnswers = [], pName = "", currentCat = "", activeQ = [];
 
-        function closeAlert() { document.getElementById('modal-alert').style.display = 'none'; }
-        function showConfirm() {
-            if(userAnswers.includes(null)) {
-                document.getElementById('alert-msg').innerText = "Ada soal yang belum dijawab!";
-                document.getElementById('modal-alert').style.display = 'flex';
-                return;
-            }
-            document.getElementById('modal-confirm').style.display = 'flex';
+        function playPopSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine'; osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            } catch(e) {}
         }
-        function closeConfirm() { document.getElementById('modal-confirm').style.display = 'none'; }
 
-        function startQuiz() {
+        function goToMenu() {
+            playPopSound();
             pName = document.getElementById('username').value.trim();
-            if(!pName) { document.getElementById('modal-alert').style.display = 'flex'; return; }
-            document.getElementById('scr-start').classList.remove('active');
-            document.getElementById('scr-quiz').classList.add('active');
+            if(!pName) return alert("Boleh tau nama kamu siapa?");
+            document.getElementById('welcome-msg').innerText = "Hai, " + pName + "!";
+            showScreen('scr-menu');
+        }
+
+        function startQuiz(cat) {
+            playPopSound();
+            currentCat = cat;
+            activeQ = dbSoal[cat];
+            currentIdx = 0;
+            userAnswers = new Array(activeQ.length).fill(null);
+            showScreen('scr-quiz');
             renderQ();
         }
 
         function renderQ() {
-            const data = questions[currentIdx];
-            document.getElementById('q-info').innerText = `PERTANYAAN ${currentIdx + 1} / 10`;
+            const data = activeQ[currentIdx];
+            const labels = {hitungan:'HITUNGAN', alam:'ALAM', sosial:'SOSIAL', budaya:'BUDAYA'};
+            document.getElementById('cat-label').innerText = labels[currentCat];
+            document.getElementById('q-count').innerText = `${currentIdx + 1} / 10`;
             document.getElementById('q-text').innerText = data.q;
             document.getElementById('prog').style.width = ((currentIdx + 1) / 10 * 100) + "%";
-
-            document.getElementById('btn-prev').disabled = (currentIdx === 0);
+            
+            document.getElementById('btn-prev').style.visibility = (currentIdx === 0) ? 'hidden' : 'visible';
             document.getElementById('btn-next').style.display = (currentIdx === 9) ? "none" : "block";
             document.getElementById('btn-finish').style.display = (currentIdx === 9) ? "block" : "none";
-
+            
             const container = document.getElementById('options-container');
             container.innerHTML = "";
             data.a.forEach((opt, i) => {
                 const div = document.createElement('div');
                 div.className = `option-item ${userAnswers[currentIdx] === i ? 'selected' : ''}`;
                 div.innerText = opt;
-                div.onclick = () => { userAnswers[currentIdx] = i; renderQ(); };
+                div.onclick = () => { playPopSound(); userAnswers[currentIdx] = i; renderQ(); };
                 container.appendChild(div);
             });
         }
 
-        function nextQ() { if(currentIdx < 9) { currentIdx++; renderQ(); } }
-        function prevQ() { if(currentIdx > 0) { currentIdx--; renderQ(); } }
+        function nextQ() { playPopSound(); if(currentIdx < 9) { currentIdx++; renderQ(); } }
+        function prevQ() { playPopSound(); if(currentIdx > 0) { currentIdx--; renderQ(); } }
+        function showConfirm() { playPopSound(); if(userAnswers.includes(null)) return alert("Isi semua dulu ya!"); document.getElementById('modal-confirm').style.display = 'flex'; }
+        function closeConfirm() { playPopSound(); document.getElementById('modal-confirm').style.display = 'none'; }
 
         function processFinal() {
+            playPopSound();
             closeConfirm();
-            let correctCount = 0;
-            userAnswers.forEach((ans, i) => { if(ans === questions[i].c) correctCount++; });
+            let score = 0;
+            userAnswers.forEach((ans, i) => { if(ans === activeQ[i].c) score++; });
+            let finalScore = score * 10;
+            
+            fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({nama: pName, kategori: currentCat, skor: finalScore}) });
 
-            // Skor 0-100
-            let finalScore = correctCount * 10;
-
-            // Kirim data langsung tanpa filter IF yang salah
-            fetch(SCRIPT_URL, { 
-                method: "POST", 
-                mode: "no-cors", 
-                body: JSON.stringify({nama: pName, skor: finalScore}) 
-            });
-
-            // Tampilkan Skor di Layar
-            document.getElementById('res-name').innerText = "Halo, " + pName + "!";
             document.getElementById('res-score').innerText = finalScore;
-            let desc = finalScore >= 70 ? "Wawasanmu keren! 🔥" : finalScore >= 40 ? "Lumayan kok! 😊" : "Coba lagi yuk! 📖";
-            document.getElementById('res-desc').innerText = desc;
+            document.getElementById('res-desc').innerText = finalScore >= 80 ? "Gila, kamu jago banget! 🔥" : finalScore >= 50 ? "Boleh juga, lumayan! 👍" : "Yah, belajar lagi yuk! 😊";
             document.getElementById('modal-res').style.display = 'flex';
+        }
+
+        function backToMenu() {
+            playPopSound();
+            document.getElementById('modal-res').style.display = 'none';
+            showScreen('scr-menu');
+        }
+
+        function showScreen(id) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
     </script>
 </body>
